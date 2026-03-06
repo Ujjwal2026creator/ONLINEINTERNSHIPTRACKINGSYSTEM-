@@ -1,4 +1,8 @@
-# Online Internship Tracking
+$env:Path += ";C:\Program Files\Git\bin"
+cd d:\ONLINEINTERNSHIPTRACKING
+git remote add origin https://github.com/YOUR_USERNAME/ONLINEINTERNSHIPTRACKING.git
+git branch -M main
+git push -u origin main# Online Internship Tracking
 
 A web application for tracking online internships with a backend API and frontend interface.
 
