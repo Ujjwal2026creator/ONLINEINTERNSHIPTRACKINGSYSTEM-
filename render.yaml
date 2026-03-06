@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: internship-tracking-backend
+    env: node
+    startCommand: npm start
+    buildCommand: npm install
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: NODE_ENV
+        value: production
+
+  - type: static
+    name: internship-tracking-frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://internship-tracking-backend.onrender.com
