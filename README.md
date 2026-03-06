@@ -1,52 +1,77 @@
-$env:Path += ";C:\Program Files\Git\bin"
-cd d:\ONLINEINTERNSHIPTRACKING
-git remote add origin https://github.com/YOUR_USERNAME/ONLINEINTERNSHIPTRACKING.git
-git branch -M main
-git push -u origin main# Online Internship Tracking
+# Online Internship Tracking System
 
-A web application for tracking online internships with a backend API and frontend interface.
+A full-stack web application for tracking internship opportunities and applications.
 
-## Project Structure
+## Features
+- Create and view internship listings
+- Track internship applications
+- User-friendly interface
 
-```
-├── backend/          # Node.js backend server
-│   ├── config/       # Database configuration
-│   ├── controllers/  # Route controllers
-│   ├── models/       # Database models
-│   ├── routes/       # API routes
-│   ├── server.js     # Server entry point
-│   └── package.json
-│
-└── frontend/         # Vite + React frontend
-    ├── src/
-    │   ├── components/  # React components
-    │   ├── App.jsx
-    │   └── main.jsx
-    ├── index.html
-    └── package.json
-```
+## Tech Stack
+- **Frontend**: React + Vite
+- **Backend**: Node.js + Express
+- **Database**: MongoDB
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js and npm installed
+- Node.js (v14 or higher)
+- MongoDB
+- Git
 
 ### Installation
 
-1. **Backend Setup**
+1. Clone the repository
+```bash
+git clone <repository-url>
+cd ONLINEINTERNSHIPTRACKING
+```
+
+2. Install backend dependencies
 ```bash
 cd backend
 npm install
+```
+
+3. Install frontend dependencies
+```bash
+cd ../frontend
+npm install
+```
+
+### Environment Variables
+
+Create a `.env` file in the `backend` directory:
+```
+MONGODB_URI=your_mongodb_connection_string
+PORT=5000
+NODE_ENV=development
+```
+
+### Running the Application
+
+1. Start the backend server
+```bash
+cd backend
 npm start
 ```
 
-2. **Frontend Setup**
+2. Start the frontend development server (in another terminal)
 ```bash
 cd frontend
-npm install
 npm run dev
 ```
 
-## License
+The application will be available at `http://localhost:5173`
 
+## Deployment
+
+### Render.com Deployment
+1. Push the code to GitHub
+2. Create a new Web Service on Render.com
+3. Connect your GitHub repository
+4. Set up environment variables in Render dashboard
+5. Configure build and start commands
+
+## License
 MIT
