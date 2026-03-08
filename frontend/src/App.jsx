@@ -15,6 +15,8 @@ function App() {
   const [editingInternship, setEditingInternship] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
 
   useEffect(() => {
     fetchInternships()
@@ -87,6 +89,8 @@ function App() {
       setInternships([...internships, data])
       setShowAddModal(false)
       setError('')
+      setSuccessMessage('✅ Internship Created Successfully!')
+      setTimeout(() => setSuccessMessage(''), 3000)
     } catch (err) {
       setError('Failed to add internship')
       console.error(err)
@@ -102,6 +106,8 @@ function App() {
       const data = await internshipService.update(editingInternship._id, updatedInternship)
       setInternships(internships.map(i => i._id === editingInternship._id ? data : i))
       setEditingInternship(null)
+      setSuccessMessage('✅ Internship Updated Successfully!')
+      setTimeout(() => setSuccessMessage(''), 3000)
     } catch (err) {
       setError('Failed to update internship')
       console.error(err)
@@ -111,6 +117,8 @@ function App() {
   const handleDeleteInternship = async (id) => {
     if (window.confirm('Delete this internship?')) {
       try {
+        setSuccessMessage('✅ Internship Deleted Successfully!')
+        setTimeout(() => setSuccessMessage(''), 3000)
         await internshipService.delete(id)
         setInternships(internships.filter(i => i._id !== id))
       } catch (err) {
@@ -132,6 +140,7 @@ function App() {
       </header>
 
       <main className="app-main">
+        {successMessage && <div className="success-message">{successMessage}</div>}
 
         {error && <div className="error-message">{error}</div>}
 
