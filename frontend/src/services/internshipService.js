@@ -1,4 +1,4 @@
-import api from "../api"
+import api from "../config/api"
 
 const getAll = async () => {
   const response = await api.get("")
@@ -26,3 +26,4 @@ export default {
   update,
   delete: deleteInternship
 }
+
