@@ -101,7 +101,6 @@ const fetchInternships = async () => {
 
   const handleEditInternship = (internship) => {
     setEditingInternship(internship)
-    setShowForm(true)
   }
 
   const handleUpdateInternship = async (updatedInternship) => {
