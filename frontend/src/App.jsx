@@ -25,20 +25,23 @@ function App() {
   useEffect(() => {
     applyFilters()
   }, [searchTerm, filterCompany, filterType, filterDuration, internships])
+  
+const fetchInternships = async () => {
+  try {
+    setLoading(true)
+    setError('')
+    const data = await internshipService.getAll()
 
-  const fetchInternships = async () => {
-    try {
-      setLoading(true)
-      setError('')
-      const data = await internshipService.getAll()
-      setInternships(data)
-    } catch (err) {
-      setError('Failed to fetch internships. Make sure your backend is running on http://localhost:5000')
-      console.error(err)
-    } finally {
-      setLoading(false)
-    }
+    // Ensure internships is always an array
+    setInternships(Array.isArray(data) ? data : [])
+
+  } catch (err) {
+    setError('Failed to fetch internships')
+    console.error(err)
+  } finally {
+    setLoading(false)
   }
+}
 
   const applyFilters = () => {
     let filtered = internships
