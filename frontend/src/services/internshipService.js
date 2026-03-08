@@ -2,11 +2,11 @@ import api from "../api"
 
 const getAll = async () => {
   const response = await api.get("")
-  return response.data.data || response.data
+  return response.data
 }
 
 const create = async (data) => {
-  const response = await api.post("/", data)
+  const response = await api.post("", data)
   return response.data
 }
 
