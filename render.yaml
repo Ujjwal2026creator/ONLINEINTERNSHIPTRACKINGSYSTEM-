@@ -18,6 +18,9 @@ services:
     plan: free
     staticPublishPath: frontend/dist
     buildCommand: cd frontend && npm install && npm run build
+    envVars:
+      - key: VITE_API_URL
+        value: https://internship-backend.onrender.com/api/internships
     routes:
       - path: /
         destination: /index.html
