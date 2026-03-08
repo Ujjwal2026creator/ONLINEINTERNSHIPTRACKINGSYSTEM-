@@ -413,11 +413,10 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;flex-start;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 2px solid var(--border);
-  border-bottom: transparent;
+  height: 3px;
+  background: linear-gradient(90deg, #6366f1, #06b6d4, #ec4899);
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
 .position-compact {
@@ -428,26 +427,27 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin: 0;
-  letter-spacing: -0.5px
+  letter-spacing: -0.5px;
+}
 
-.internship-card-compact:hover::before {
-  opacity: 1;
+.internship-card-compact:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-8px) scale(1.02);
+  border-color: var(--primary-color);
 }
 
 .card-header-compact {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid var(--border);
+  padding-bottom: 1.5rem;
+  border-bottom: transparent;
 }
 
-.position-compact {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin: 0;
+.button-group {
+  display: flex;
+  gap: 0.5rem;
 }
 
 .card-actions {
