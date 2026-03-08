@@ -1,9 +1,9 @@
-import React from 'react'
-import { calculateDurationInMonths, formatDate } from '../utils/dateUtils'
+import React from "react"
+import { calculateDurationInMonths, formatDate } from "../utils/dateUtils"
 
-function InternshipList({ internships, onDelete, onEdit }) {
+function InternshipList({ internships = [], onDelete, onEdit }) {
 
-  if (!internships || internships.length === 0) {
+  if (internships.length === 0) {
     return (
       <div className="empty-state">
         <p>No internships found. Start by adding a new one!</p>
@@ -12,15 +12,14 @@ function InternshipList({ internships, onDelete, onEdit }) {
   }
 
   const calculateDuration = (startDate, endDate) => {
-    const months = calculateDurationInMonths(startDate, endDate)
-    return months
+    return calculateDurationInMonths(startDate, endDate)
   }
 
   return (
     <div className="internships-grid">
-      {internships?.map(internship => (
+      {internships.map((internship) => (
         <div key={internship._id} className="internship-card-compact">
-          
+
           <div className="card-header-compact">
             <h3 className="position-compact">{internship.internshipRole}</h3>
 
