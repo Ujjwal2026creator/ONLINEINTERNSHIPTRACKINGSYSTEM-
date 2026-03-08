@@ -1,4 +1,3 @@
-```javascript
 import React, { useState, useEffect } from 'react'
 import InternshipForm from './components/InternshipForm'
 import InternshipList from './components/InternshipList'
@@ -230,4 +229,3 @@ function App() {
 }
 
 export default App
-```
