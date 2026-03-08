@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import InternshipForm from './components/InternshipForm'
 import InternshipList from './components/InternshipList'
-import './App.css'
-
-const API_URL = 'http://localhost:5000/api/internships'
+import internshipService from './services/internshipService'
+import './styles/App.css'
 
 function App() {
   const [internships, setInternships] = useState([])
@@ -32,8 +30,8 @@ function App() {
     try {
       setLoading(true)
       setError('')
-      const response = await axios.get(API_URL)
-      setInternships(response.data)
+      const data = await internshipService.getAll()
+      setInternships(data)
     } catch (err) {
       setError('Failed to fetch internships. Make sure your backend is running on http://localhost:5000')
       console.error(err)
@@ -88,8 +86,8 @@ function App() {
 
   const handleAddInternship = async (newInternship) => {
     try {
-      const response = await axios.post(API_URL, newInternship)
-      setInternships([...internships, response.data])
+      const data = await internshipService.create(newInternship)
+      setInternships([...internships, data])
       setShowAddModal(false)
       setError('')
     } catch (err) {
@@ -107,8 +105,8 @@ function App() {
     if (!editingInternship) return
     
     try {
-      const response = await axios.put(`${API_URL}/${editingInternship._id}`, updatedInternship)
-      setInternships(internships.map(i => i._id === editingInternship._id ? response.data : i))
+      const data = await internshipService.update(editingInternship._id, updatedInternship)
+      setInternships(internships.map(i => i._id === editingInternship._id ? data : i))
       setEditingInternship(null)
       setError('')
     } catch (err) {
@@ -120,7 +118,7 @@ function App() {
   const handleDeleteInternship = async (id) => {
     if (window.confirm('Are you sure you want to delete this internship?')) {
       try {
-        await axios.delete(`${API_URL}/${id}`)
+        await internshipService.delete(id)
         setInternships(internships.filter(internship => internship._id !== id))
         setError('')
       } catch (err) {

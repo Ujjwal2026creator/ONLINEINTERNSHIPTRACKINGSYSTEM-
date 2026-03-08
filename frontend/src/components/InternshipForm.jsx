@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { formatDateForInput } from '../utils/dateUtils'
 
 function InternshipForm({ onSubmit, initialData, isEditing }) {
   const [formData, setFormData] = useState({
@@ -23,8 +24,8 @@ function InternshipForm({ onSubmit, initialData, isEditing }) {
         companyName: initialData.companyName || '',
         internshipRole: initialData.internshipRole || '',
         internshipType: initialData.internshipType || 'Paid',
-        startDate: initialData.startDate ? new Date(initialData.startDate).toISOString().split('T')[0] : '',
-        endDate: initialData.endDate ? new Date(initialData.endDate).toISOString().split('T')[0] : '',
+        startDate: formatDateForInput(initialData.startDate),
+        endDate: formatDateForInput(initialData.endDate),
         mentorName: initialData.mentorName || '',
         isPaid: initialData.isPaid || false
       })

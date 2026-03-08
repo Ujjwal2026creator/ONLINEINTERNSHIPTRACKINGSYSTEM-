@@ -1,6 +1,7 @@
 import React from 'react'
+import { calculateDurationInMonths, formatDate } from '../utils/dateUtils'
 
-function InternshipList({ internships, onDelete }) {
+function InternshipList({ internships, onDelete, onEdit }) {
   if (internships.length === 0) {
     return (
       <div className="empty-state">
@@ -10,10 +11,8 @@ function InternshipList({ internships, onDelete }) {
   }
 
   const calculateDuration = (startDate, endDate) => {
-    const start = new Date(startDate)
-    const end = new Date(endDate)
-    const months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth())
-    return months > 0 ? `${months}` : '0'
+    const months = calculateDurationInMonths(startDate, endDate)
+    return months
   }
 
   return (
@@ -22,13 +21,22 @@ function InternshipList({ internships, onDelete }) {
         <div key={internship._id} className="internship-card-compact">
           <div className="card-header-compact">
             <h3 className="position-compact">{internship.internshipRole}</h3>
-            <button
-              className="btn-delete-compact"
-              onClick={() => onDelete(internship._id)}
-              title="Delete internship"
-            >
-              Delete
-            </button>
+            <div className="button-group">
+              <button
+                className="btn-edit-compact"
+                onClick={() => onEdit(internship)}
+                title="Edit internship"
+              >
+                Edit
+              </button>
+              <button
+                className="btn-delete-compact"
+                onClick={() => onDelete(internship._id)}
+                title="Delete internship"
+              >
+                Delete
+              </button>
+            </div>
           </div>
 
           <div className="info-boxes">
@@ -67,21 +75,14 @@ function InternshipList({ internships, onDelete }) {
             <div className="info-box">
               <div className="box-label">Start</div>
               <div className="box-value">
-                {new Date(internship.startDate).toLocaleDateString()}
+                {formatDate(internship.startDate)}
               </div>
             </div>
 
             <div className="info-box">
               <div className="box-label">End</div>
               <div className="box-value">
-                {new Date(internship.endDate).toLocaleDateString()}
-              </div>
-            </div>
-
-            <div className="info-box">
-              <div className="box-label">Status</div>
-              <div className={`box-value ${internship.isPaid ? 'paid-status' : 'unpaid-status'}`}>
-                {internship.isPaid ? 'Paid' : 'Unpaid'}
+                {formatDate(internship.endDate)}
               </div>
             </div>
           </div>
