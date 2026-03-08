@@ -1,7 +1,7 @@
 import api from "../api"
 
 const getAll = async () => {
-  const response = await api.get("/")
+  const response = await api.get("")
   return response.data.data || response.data
 }
 
