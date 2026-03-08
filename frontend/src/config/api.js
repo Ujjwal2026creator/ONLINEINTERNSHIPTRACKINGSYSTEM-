@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://backend-3n91.onrender.com'
+const API_URL = import.meta.env.VITE_API_URL || 'https://backend-3n91.onrender.com/api/internships'
 
 const apiInstance = axios.create({
   baseURL: API_URL,
