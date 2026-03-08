@@ -1,7 +1,8 @@
-import React from 'react'
-import { calculateDurationInMonths, formatDate } from '../utils/dateUtils'
+import React from "react"
+import { calculateDurationInMonths, formatDate } from "../utils/dateUtils"
 
-function InternshipList({ internships, onDelete, onEdit }) {
+function InternshipList({ internships = [], onDelete, onEdit }) {
+
   if (internships.length === 0) {
     return (
       <div className="empty-state">
@@ -11,28 +12,28 @@ function InternshipList({ internships, onDelete, onEdit }) {
   }
 
   const calculateDuration = (startDate, endDate) => {
-    const months = calculateDurationInMonths(startDate, endDate)
-    return months
+    return calculateDurationInMonths(startDate, endDate)
   }
 
   return (
     <div className="internships-grid">
-      {internships.map(internship => (
+      {internships.map((internship) => (
         <div key={internship._id} className="internship-card-compact">
+
           <div className="card-header-compact">
             <h3 className="position-compact">{internship.internshipRole}</h3>
+
             <div className="button-group">
               <button
                 className="btn-edit-compact"
                 onClick={() => onEdit(internship)}
-                title="Edit internship"
               >
                 Edit
               </button>
+
               <button
                 className="btn-delete-compact"
                 onClick={() => onDelete(internship._id)}
-                title="Delete internship"
               >
                 Delete
               </button>
@@ -40,6 +41,7 @@ function InternshipList({ internships, onDelete, onEdit }) {
           </div>
 
           <div className="info-boxes">
+
             <div className="info-box">
               <div className="box-label">Student</div>
               <div className="box-value">{internship.studentName}</div>
@@ -62,14 +64,16 @@ function InternshipList({ internships, onDelete, onEdit }) {
 
             <div className="info-box">
               <div className="box-label">Type</div>
-              <div className={`box-value type-badge ${internship.internshipType.toLowerCase()}`}>
+              <div className={`box-value type-badge ${internship.internshipType?.toLowerCase()}`}>
                 {internship.internshipType}
               </div>
             </div>
 
             <div className="info-box">
               <div className="box-label">Duration</div>
-              <div className="box-value">{calculateDuration(internship.startDate, internship.endDate)} month(s)</div>
+              <div className="box-value">
+                {calculateDuration(internship.startDate, internship.endDate)} month(s)
+              </div>
             </div>
 
             <div className="info-box">
@@ -85,7 +89,9 @@ function InternshipList({ internships, onDelete, onEdit }) {
                 {formatDate(internship.endDate)}
               </div>
             </div>
+
           </div>
+
         </div>
       ))}
     </div>

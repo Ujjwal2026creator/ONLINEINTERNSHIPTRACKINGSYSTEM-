@@ -1,12 +1,10 @@
-import axios from 'axios'
+import axios from "axios"
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/internships'
-
-const apiInstance = axios.create({
-  baseURL: API_URL,
+const api = axios.create({
+  baseURL: "https://backend-3n91.onrender.com/api/internships",
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json"
   }
 })
 
-export default apiInstance
+export default api

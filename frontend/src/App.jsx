@@ -1,3 +1,4 @@
+```javascript
 import React, { useState, useEffect } from 'react'
 import InternshipForm from './components/InternshipForm'
 import InternshipList from './components/InternshipList'
@@ -16,12 +17,10 @@ function App() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // Fetch internships on component mount
   useEffect(() => {
     fetchInternships()
   }, [])
 
-  // Apply filters whenever search or filter values change
   useEffect(() => {
     applyFilters()
   }, [searchTerm, filterCompany, filterType, filterDuration, internships])
@@ -30,10 +29,15 @@ function App() {
     try {
       setLoading(true)
       setError('')
+
       const data = await internshipService.getAll()
-      setInternships(data)
+      const internshipsData = Array.isArray(data) ? data : []
+
+      setInternships(internshipsData)
+      setFilteredInternships(internshipsData)
+
     } catch (err) {
-      setError('Failed to fetch internships. Make sure your backend is running on http://localhost:5000')
+      setError('Failed to fetch internships')
       console.error(err)
     } finally {
       setLoading(false)
@@ -43,7 +47,6 @@ function App() {
   const applyFilters = () => {
     let filtered = internships
 
-    // Search filter
     if (searchTerm.trim()) {
       const search = searchTerm.toLowerCase()
       filtered = filtered.filter(
@@ -55,28 +58,23 @@ function App() {
       )
     }
 
-    // Company filter
     if (filterCompany) {
-      filtered = filtered.filter(internship => internship.companyName === filterCompany)
+      filtered = filtered.filter(i => i.companyName === filterCompany)
     }
 
-    // Type filter
     if (filterType) {
-      filtered = filtered.filter(internship => internship.internshipType === filterType)
+      filtered = filtered.filter(i => i.internshipType === filterType)
     }
 
-    // Duration filter (Monthly or Yearly based)
     if (filterDuration) {
-      filtered = filtered.filter(internship => {
-        const start = new Date(internship.startDate)
-        const end = new Date(internship.endDate)
+      filtered = filtered.filter(i => {
+        const start = new Date(i.startDate)
+        const end = new Date(i.endDate)
         const months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth())
-        
-        if (filterDuration === 'monthly') {
-          return months >= 1 && months <= 3
-        } else if (filterDuration === 'yearly') {
-          return months > 3
-        }
+
+        if (filterDuration === 'monthly') return months >= 1 && months <= 3
+        if (filterDuration === 'yearly') return months > 3
+
         return true
       })
     }
@@ -91,36 +89,31 @@ function App() {
       setShowAddModal(false)
       setError('')
     } catch (err) {
-      setError('Failed to add internship: ' + (err.response?.data?.message || err.message))
+      setError('Failed to add internship')
       console.error(err)
     }
   }
 
   const handleEditInternship = (internship) => {
     setEditingInternship(internship)
-    setShowForm(true)
   }
 
   const handleUpdateInternship = async (updatedInternship) => {
-    if (!editingInternship) return
-    
     try {
       const data = await internshipService.update(editingInternship._id, updatedInternship)
       setInternships(internships.map(i => i._id === editingInternship._id ? data : i))
       setEditingInternship(null)
-      setError('')
     } catch (err) {
-      setError('Failed to update internship: ' + (err.response?.data?.message || err.message))
+      setError('Failed to update internship')
       console.error(err)
     }
   }
 
   const handleDeleteInternship = async (id) => {
-    if (window.confirm('Are you sure you want to delete this internship?')) {
+    if (window.confirm('Delete this internship?')) {
       try {
         await internshipService.delete(id)
-        setInternships(internships.filter(internship => internship._id !== id))
-        setError('')
+        setInternships(internships.filter(i => i._id !== id))
       } catch (err) {
         setError('Failed to delete internship')
         console.error(err)
@@ -128,147 +121,96 @@ function App() {
     }
   }
 
-  // Get unique companies and types for filter dropdowns
   const companies = [...new Set(internships.map(i => i.companyName).filter(Boolean))]
   const types = ['Paid', 'Unpaid']
 
   return (
     <div className="app">
+
       <header className="app-header">
         <h1>Internship Tracker</h1>
         <p>Manage and track your internship opportunities</p>
       </header>
 
       <main className="app-main">
+
         {error && <div className="error-message">{error}</div>}
 
         {showAddModal && (
           <div className="modal-overlay" onClick={() => setShowAddModal(false)}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <div className="modal-header">
-                <h2>Add New Internship</h2>
-                <button 
-                  className="modal-close"
-                  onClick={() => setShowAddModal(false)}
-                >
-                  ✕
-                </button>
-              </div>
-              <div className="modal-body">
-                <InternshipForm 
-                  onSubmit={handleAddInternship}
-                  initialData={null}
-                  isEditing={false}
-                />
-              </div>
+              <h2>Add Internship</h2>
+              <InternshipForm
+                onSubmit={handleAddInternship}
+                initialData={null}
+                isEditing={false}
+              />
             </div>
           </div>
         )}
 
         {editingInternship && (
-          <div className="modal-overlay" onClick={() => {
-            setEditingInternship(null)
-          }}>
+          <div className="modal-overlay" onClick={() => setEditingInternship(null)}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <div className="modal-header">
-                <h2>Edit Internship</h2>
-                <button 
-                  className="modal-close"
-                  onClick={() => {
-                    setEditingInternship(null)
-                  }}
-                >
-                  ✕
-                </button>
-              </div>
-              <div className="modal-body">
-                <InternshipForm 
-                  onSubmit={handleUpdateInternship}
-                  initialData={editingInternship}
-                  isEditing={true}
-                />
-              </div>
+              <h2>Edit Internship</h2>
+              <InternshipForm
+                onSubmit={handleUpdateInternship}
+                initialData={editingInternship}
+                isEditing={true}
+              />
             </div>
           </div>
         )}
 
         <div className="filters-section">
+
           <div className="search-box">
             <input
               type="text"
-              placeholder="Search by role, company, student, or mentor..."
+              placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
             />
-            <button
-              className="btn btn-primary btn-add-quick"
-              onClick={() => setShowAddModal(true)}
-            >
+
+            <button onClick={() => setShowAddModal(true)}>
               + Add
             </button>
           </div>
 
           <div className="filter-controls">
-            <select
-              value={filterCompany}
-              onChange={(e) => setFilterCompany(e.target.value)}
-              className="filter-select"
-            >
+
+            <select value={filterCompany} onChange={(e) => setFilterCompany(e.target.value)}>
               <option value="">All Companies</option>
               {companies.map(company => (
-                <option key={company} value={company}>
-                  {company}
-                </option>
+                <option key={company} value={company}>{company}</option>
               ))}
             </select>
 
-            <select
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value)}
-              className="filter-select"
-            >
+            <select value={filterType} onChange={(e) => setFilterType(e.target.value)}>
               <option value="">All Types</option>
               {types.map(type => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
+                <option key={type} value={type}>{type}</option>
               ))}
             </select>
 
-            <select
-              value={filterDuration}
-              onChange={(e) => setFilterDuration(e.target.value)}
-              className="filter-select"
-            >
-              <option value="">All Durations</option>
-              <option value="monthly">Monthly Based</option>
-              <option value="yearly">Yearly Based</option>
+            <select value={filterDuration} onChange={(e) => setFilterDuration(e.target.value)}>
+              <option value="">All Duration</option>
+              <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly</option>
             </select>
 
-            {(searchTerm || filterCompany || filterType || filterDuration) && (
-              <button
-                className="btn btn-secondary"
-                onClick={() => {
-                  setSearchTerm('')
-                  setFilterCompany('')
-                  setFilterType('')
-                  setFilterDuration('')
-                }}
-              >
-                Clear Filters
-              </button>
-            )}
           </div>
+
         </div>
 
         {loading ? (
-          <div className="loading">Loading internships...</div>
+          <div>Loading internships...</div>
         ) : (
           <>
-            <div className="results-info">
+            <p>
               Showing {filteredInternships.length} of {internships.length} internships
-            </div>
+            </p>
+
             <InternshipList
               internships={filteredInternships}
               onDelete={handleDeleteInternship}
@@ -276,13 +218,16 @@ function App() {
             />
           </>
         )}
+
       </main>
 
       <footer className="app-footer">
-        <p>&copy; 2026 Internship Tracker. Manage your career opportunities effectively.</p>
+        <p>© 2026 Internship Tracker</p>
       </footer>
+
     </div>
   )
 }
 
 export default App
+```
