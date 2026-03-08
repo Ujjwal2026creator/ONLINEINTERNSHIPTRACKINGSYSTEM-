@@ -15,7 +15,7 @@ const update = async (id, data) => {
   return response.data
 }
 
-const remove = async (id) => {
+const deleteInternship = async (id) => {
   const response = await api.delete(`/${id}`)
   return response.data
 }
@@ -24,5 +24,5 @@ export default {
   getAll,
   create,
   update,
-  remove
+  delete: deleteInternship
 }
