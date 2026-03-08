@@ -1,18 +1,17 @@
 import apiInstance from '../config/api.js'
 
 const internshipService = {
-  // Get all internships
+
   async getAll() {
     try {
       const response = await apiInstance.get('/')
-      return response.data
+      return response.data || []
     } catch (error) {
       console.error('Error fetching internships:', error)
-      throw error
+      return []
     }
   },
 
-  // Get single internship by ID
   async getById(id) {
     try {
       const response = await apiInstance.get(`/${id}`)
@@ -23,7 +22,6 @@ const internshipService = {
     }
   },
 
-  // Create new internship
   async create(internshipData) {
     try {
       const response = await apiInstance.post('/', internshipData)
@@ -34,7 +32,6 @@ const internshipService = {
     }
   },
 
-  // Update internship
   async update(id, internshipData) {
     try {
       const response = await apiInstance.put(`/${id}`, internshipData)
@@ -45,7 +42,6 @@ const internshipService = {
     }
   },
 
-  // Delete internship
   async delete(id) {
     try {
       const response = await apiInstance.delete(`/${id}`)
@@ -55,6 +51,7 @@ const internshipService = {
       throw error
     }
   }
+
 }
 
 export default internshipService
